@@ -23,8 +23,8 @@ public class FormaPagamentoMain {
         cartao.setDescricao("Cartão Visa");
 
 
-        formaPagamentoRepository.salvar(dinheiro);
-        formaPagamentoRepository.salvar(cartao);
+        formaPagamentoRepository.save(dinheiro);
+        formaPagamentoRepository.save(cartao);
 
         
 

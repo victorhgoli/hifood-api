@@ -1,14 +1,12 @@
 package com.vhworks.hifoodapi.domain.repository;
 
-import java.util.List;
-
 import com.vhworks.hifoodapi.domain.model.Permissao;
 
-public interface PermissaoRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-    List<Permissao> listar();
-	Permissao buscar(Long id);
-	Permissao salvar(Permissao cozinha);
-	void remover(Permissao cozinha);
+@Repository
+public interface PermissaoRepository extends JpaRepository<Permissao,Long>{
+
     
 }

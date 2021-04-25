@@ -1,14 +1,12 @@
 package com.vhworks.hifoodapi.domain.repository;
 
-import java.util.List;
-
 import com.vhworks.hifoodapi.domain.model.Estado;
 
-public interface EstadoRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-    List<Estado> listar();
-	Estado buscar(Long id);
-	Estado salvar(Estado estado);
-	void remover(Long estadoId);
-    
+@Repository
+public interface EstadoRepository extends  JpaRepository<Estado,Long>{
+
+   
 }

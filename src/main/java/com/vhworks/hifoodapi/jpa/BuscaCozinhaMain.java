@@ -1,5 +1,7 @@
 package com.vhworks.hifoodapi.jpa;
 
+import java.util.Optional;
+
 import com.vhworks.hifoodapi.HifoodApiApplication;
 import com.vhworks.hifoodapi.domain.model.Cozinha;
 import com.vhworks.hifoodapi.domain.repository.CozinhaRepository;
@@ -16,9 +18,9 @@ public class BuscaCozinhaMain {
 
 		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
 
-		Cozinha cozinha = cozinhaRepository.buscar(1L);
+		Optional<Cozinha> cozinha = cozinhaRepository.findById(1L);
 
-		System.out.println(cozinha.getNome());
+		System.out.println(cozinha.get().getNome());
 	}
 
 }
