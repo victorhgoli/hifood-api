@@ -1,6 +1,6 @@
 package com.hifood.domain.model;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -31,7 +31,7 @@ public class Usuario {
     private String senha;
 
     @CreationTimestamp
-    private LocalDateTime dataCadastro;
+    private OffsetDateTime dataCadastro;
 
     @ManyToMany
     @JoinTable(name = "usuario_grupo",

@@ -1,5 +1,7 @@
 package com.hifood.domain.service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ public class CadastroRestauranteService {
 	@Autowired
 	private CadastroCozinhaService cozinhaService;
 
+	@Transactional
 	public Restaurante salvar(Restaurante restaurante) {
 		Long cozinhaId = restaurante.getCozinha().getId();
 
@@ -27,6 +30,7 @@ public class CadastroRestauranteService {
 		return restauranteRepository.save(restaurante);
 	}
 
+	@Transactional
 	public Restaurante buscarOuFalhar(Long restauranteId) {
 		return restauranteRepository.findById(restauranteId).orElseThrow(
 				() -> new RestauranteNaoEncontradoException(restauranteId));

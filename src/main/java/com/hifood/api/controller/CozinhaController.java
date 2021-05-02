@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hifood.api.assembler.CozinhaInputDisassembler;
+import com.hifood.api.assembler.CozinhaModelAssembler;
+import com.hifood.api.model.CozinhaModel;
+import com.hifood.api.model.input.CozinhaInput;
 import com.hifood.domain.exception.CozinhaNaoEncontradaException;
 import com.hifood.domain.exception.NegocioException;
 import com.hifood.domain.model.Cozinha;
@@ -33,35 +37,46 @@ public class CozinhaController {
 	@Autowired
 	private CadastroCozinhaService cadastroCozinha;
 
+	@Autowired
+	private CozinhaModelAssembler cozinhaModelAssembler;
+
+	@Autowired
+	private CozinhaInputDisassembler cozinhaInputDisassembler;
+
 	@GetMapping
-	public List<Cozinha> listar() {
-		return cozinhaRepository.findAll();
+	public List<CozinhaModel> listar() {
+		return cozinhaModelAssembler.toCollectionModel(cozinhaRepository.findAll());
 	}
 
 	@GetMapping("/{cozinhaId}")
-	public Cozinha buscar(@PathVariable Long cozinhaId) {
-		return cadastroCozinha.buscarOuFalhar(cozinhaId);
+	public CozinhaModel buscar(@PathVariable Long cozinhaId) {
+		return cozinhaModelAssembler.toModel(cadastroCozinha.buscarOuFalhar(cozinhaId));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cozinha adicionar(@Valid @RequestBody Cozinha cozinha) {
+	public CozinhaModel adicionar(@Valid @RequestBody CozinhaInput cozinhaInput) {
 		try {
-			return cadastroCozinha.salvar(cozinha);
+
+			Cozinha cozinha = cozinhaInputDisassembler.toDomainObject(cozinhaInput);
+
+			return cozinhaModelAssembler.toModel(cadastroCozinha.salvar(cozinha));
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage(), e.getCause());
 		}
 	}
 
 	@PutMapping("/{cozinhaId}")
-	public Cozinha atualizar(@PathVariable Long cozinhaId, @Valid @RequestBody Cozinha cozinha) {
+	public CozinhaModel atualizar(@PathVariable Long cozinhaId, @Valid @RequestBody CozinhaInput cozinhaInput) {
 		try {
 
 			Cozinha cozinhaAtual = cadastroCozinha.buscarOuFalhar(cozinhaId);
 
-			BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
+			cozinhaInputDisassembler.copyToDomainObject(cozinhaInput, cozinhaAtual);
 
-			return cadastroCozinha.salvar(cozinhaAtual);
+//			BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
+
+			return cozinhaModelAssembler.toModel(cadastroCozinha.salvar(cozinhaAtual));
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage(), e.getCause());
 		}

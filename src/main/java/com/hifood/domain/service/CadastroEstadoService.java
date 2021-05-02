@@ -1,5 +1,7 @@
 package com.hifood.domain.service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -22,6 +24,7 @@ public class CadastroEstadoService {
         return estadoRepository.save(estado);
     }
 
+    @Transactional
     public void excluir(Long estadoId) {
         try {
             estadoRepository.deleteById(estadoId);
@@ -34,6 +37,7 @@ public class CadastroEstadoService {
         }
     }
 
+    @Transactional
     public Estado buscarOuFalhar(Long estadoId) {
         return estadoRepository.findById(estadoId).orElseThrow(() -> new EstadoNaoEncontradoException(estadoId));
     }

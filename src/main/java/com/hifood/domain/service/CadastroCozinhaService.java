@@ -1,5 +1,7 @@
 package com.hifood.domain.service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -22,6 +24,7 @@ public class CadastroCozinhaService {
 		return cozinhaRepository.save(cozinha);
 	}
 
+	@Transactional
 	public void excluir(Long cozinhaId) {
 		try {
 			cozinhaRepository.deleteById(cozinhaId);
@@ -35,6 +38,7 @@ public class CadastroCozinhaService {
 		}
 	}
 
+	@Transactional
 	public Cozinha buscarOuFalhar(Long cozinhaId) {
 		return cozinhaRepository.findById(cozinhaId).orElseThrow(() -> new CozinhaNaoEncontradaException(cozinhaId));
 	}

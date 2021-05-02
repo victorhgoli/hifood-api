@@ -1,5 +1,7 @@
 package com.hifood.domain.service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -34,6 +36,7 @@ public class CadastroProdutoService {
         return produtoRepository.save(produto);
     }
 
+    @Transactional
     public void excluir(Long produtoId) {
         try {
             produtoRepository.deleteById(produtoId);
