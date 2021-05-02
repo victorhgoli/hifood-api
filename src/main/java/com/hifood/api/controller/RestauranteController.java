@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hifood.domain.exception.CozinhaNaoEncontradaException;
 import com.hifood.domain.exception.NegocioException;
 import com.hifood.domain.exception.RestauranteNaoEncontradoException;
 import com.hifood.domain.model.Restaurante;
@@ -55,11 +56,12 @@ public class RestauranteController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Restaurante adicionar(@Valid @RequestBody Restaurante restaurante) {
+	public Restaurante adicionar(@RequestBody @Valid Restaurante restaurante) {
+
 		try {
 			return cadastroRestaurante.salvar(restaurante);
-		} catch (RestauranteNaoEncontradoException e) {
-			throw new NegocioException(e.getMessage(), e.getCause());
+		} catch (CozinhaNaoEncontradaException e) {
+			throw new NegocioException(e.getMessage());
 		}
 	}
 

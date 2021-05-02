@@ -1,0 +1,7 @@
+{
+	"nome": "China town",
+	"taxaFrete": 1,
+	"cozinha": {
+		"id": 100
+	}
+}

@@ -13,7 +13,7 @@ import com.hifood.domain.repository.CozinhaRepository;
 @Service
 public class CadastroCozinhaService {
 
-	private static final String COZINHA_DE_CÓDIGO_D_NÃO_PODE_SER_REMOVIDA_POIS_ESTÁ_EM_USO = "Cozinha de código %d não pode ser removida, pois está em uso";
+	private static final String MSG_COZINHA_EM_USO = "Cozinha de código %d não pode ser removida, pois está em uso";
 	
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
@@ -31,7 +31,7 @@ public class CadastroCozinhaService {
 
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
-					String.format(COZINHA_DE_CÓDIGO_D_NÃO_PODE_SER_REMOVIDA_POIS_ESTÁ_EM_USO, cozinhaId));
+					String.format(MSG_COZINHA_EM_USO, cozinhaId));
 		}
 	}
 
