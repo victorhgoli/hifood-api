@@ -85,6 +85,18 @@ public class RestauranteController {
 	public void remover(@PathVariable Long restauranteId) {
 		restauranteRepository.deleteById(restauranteId);
 	}
-
+	
+	@PutMapping("/{restauranteId}/ativo")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	public void ativar(@PathVariable Long restauranteId) {
+		cadastroRestaurante.ativar(restauranteId);
+	}
+	
+	@DeleteMapping("/{restauranteId}/ativo")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	public void inativar(@PathVariable Long restauranteId) {
+		cadastroRestaurante.inativar(restauranteId);
+	}
+	
 
 }
