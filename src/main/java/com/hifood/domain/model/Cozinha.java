@@ -9,9 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
-
-import com.hifood.core.validation.Groups;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
