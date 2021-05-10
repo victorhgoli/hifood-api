@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hifood.domain.exception.RestauranteNaoEncontradoException;
+import com.hifood.domain.model.Cidade;
 import com.hifood.domain.model.Cozinha;
 import com.hifood.domain.model.Restaurante;
 import com.hifood.domain.repository.RestauranteRepository;
@@ -18,14 +19,21 @@ public class CadastroRestauranteService {
 
 	@Autowired
 	private CadastroCozinhaService cozinhaService;
+	
+	@Autowired
+	private CadastroCidadeService cidadeService;
 
 	@Transactional
 	public Restaurante salvar(Restaurante restaurante) {
 		Long cozinhaId = restaurante.getCozinha().getId();
+		Long cidadeId = restaurante.getEndereco().getCidade().getId();
 
 		Cozinha cozinha = cozinhaService.buscarOuFalhar(cozinhaId);
+		Cidade cidade = cidadeService.buscarOuFalhar(cidadeId);
 
 		restaurante.setCozinha(cozinha);
+		restaurante.getEndereco().setCidade(cidade);
+		
 
 		return restauranteRepository.save(restaurante);
 	}

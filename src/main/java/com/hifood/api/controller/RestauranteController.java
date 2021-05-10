@@ -20,6 +20,7 @@ import com.hifood.api.assembler.RestauranteInputDisassembler;
 import com.hifood.api.assembler.RestauranteModelAssembler;
 import com.hifood.api.model.RestauranteModel;
 import com.hifood.api.model.input.RestauranteInput;
+import com.hifood.domain.exception.CidadeNaoEncontradaException;
 import com.hifood.domain.exception.CozinhaNaoEncontradaException;
 import com.hifood.domain.exception.NegocioException;
 import com.hifood.domain.exception.RestauranteNaoEncontradoException;
@@ -61,7 +62,7 @@ public class RestauranteController {
 			Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
 			
 			return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restaurante));
-		} catch (CozinhaNaoEncontradaException e) {
+		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
 	}
@@ -75,7 +76,7 @@ public class RestauranteController {
 			restauranteInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
 			
 			return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restauranteAtual));
-		} catch (RestauranteNaoEncontradoException e) {
+		} catch (RestauranteNaoEncontradoException | CidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
 	}
