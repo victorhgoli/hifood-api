@@ -5,9 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.hifood.api.model.input.EstadoInput;
-import com.hifood.domain.model.Cozinha;
 import com.hifood.domain.model.Estado;
-import com.hifood.domain.model.Restaurante;
 
 @Component
 public class EstadoInputDisassembler {

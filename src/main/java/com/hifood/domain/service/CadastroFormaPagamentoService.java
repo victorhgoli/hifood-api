@@ -7,9 +7,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.hifood.domain.exception.CidadeNaoEncontradaException;
 import com.hifood.domain.exception.EntidadeEmUsoException;
-import com.hifood.domain.exception.EntidadeNaoEncontradaException;
 import com.hifood.domain.exception.FormaPagamentoNaoEncontradoException;
 import com.hifood.domain.model.FormaPagamento;
 import com.hifood.domain.repository.FormaPagamentoRepository;

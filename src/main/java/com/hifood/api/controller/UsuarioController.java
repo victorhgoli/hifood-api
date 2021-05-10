@@ -85,7 +85,7 @@ public class UsuarioController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void alteraSenha(@PathVariable Long userId, @RequestBody @Valid SenhaInput senhaInput) {
 		try {
-			cadastroUsuario.alterarSenha(userId, senhaInput);
+			cadastroUsuario.alterarSenha(userId, senhaInput.getSenhaAtual(), senhaInput.getNovaSenha());
 		} catch (UsuarioNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage(), e.getCause());
 		}

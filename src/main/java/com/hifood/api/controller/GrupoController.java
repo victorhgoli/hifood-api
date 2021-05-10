@@ -20,8 +20,6 @@ import com.hifood.api.assembler.GrupoInputDisassembler;
 import com.hifood.api.assembler.GrupoModelAssembler;
 import com.hifood.api.model.GrupoModel;
 import com.hifood.api.model.input.GrupoInput;
-import com.hifood.domain.exception.GrupoNaoEncontradoException;
-import com.hifood.domain.exception.NegocioException;
 import com.hifood.domain.model.Grupo;
 import com.hifood.domain.repository.GrupoRepository;
 import com.hifood.domain.service.CadastroGrupoService;
