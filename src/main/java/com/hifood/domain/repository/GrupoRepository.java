@@ -8,5 +8,4 @@ import com.hifood.domain.model.Grupo;
 @Repository
 public interface GrupoRepository extends  JpaRepository<Grupo,Long>{
 
-   
 }

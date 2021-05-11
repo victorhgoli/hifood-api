@@ -22,6 +22,9 @@ public class CadastroUsuarioService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private CadastroGrupoService cadastroGrupo;
 
 	public Usuario salvar(Usuario usuario) {
 		usuarioRepository.detach(usuario);
@@ -65,6 +68,22 @@ public class CadastroUsuarioService {
 
 		usuario.setSenha(novaSenha);
 
+	}
+
+	@Transactional
+	public void associarGrupo(Long usuarioId, Long grupoId) {
+		var usuario = buscarOuFalhar(usuarioId);
+		var grupo = cadastroGrupo.buscarOuFalhar(grupoId);
+		
+		usuario.adicionarGrupo(grupo);
+	}
+	
+	@Transactional
+	public void desassociarGrupo(Long usuarioId, Long grupoId) {
+		var usuario = buscarOuFalhar(usuarioId);
+		var grupo = cadastroGrupo.buscarOuFalhar(grupoId);
+		
+		usuario.removerGrupo(grupo);
 	}
 
 }

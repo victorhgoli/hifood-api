@@ -2,6 +2,7 @@ package com.hifood.domain.model;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,7 +44,7 @@ public class Usuario {
     @JoinTable(name = "usuario_grupo",
             joinColumns = @JoinColumn(name="usuario_id"),
             inverseJoinColumns = @JoinColumn(name="grupo_id"))
-    private List<Grupo> grupos;
+    private Set<Grupo> grupos;
     
     
     public boolean senhaCoincideCom(String senha) {
@@ -53,5 +54,13 @@ public class Usuario {
     public boolean senhaNaoCoincideCom(String senha) {
         return !senhaCoincideCom(senha);
     }
+
+	public boolean adicionarGrupo(Grupo grupo) {
+		return getGrupos().add(grupo);
+	}
+	
+	public boolean removerGrupo(Grupo grupo) {
+		return getGrupos().remove(grupo);
+	}
 
 }
