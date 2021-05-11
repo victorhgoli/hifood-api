@@ -66,6 +66,12 @@ public class Restaurante {
 	@ManyToMany
 	@JoinTable(name = "restaurante_forma_pagamento", joinColumns = @JoinColumn(name = "restaurante_id"), inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
 	private Set<FormaPagamento> formasPagamento = new HashSet<>();
+	
+	@ManyToMany
+	@JoinTable(name="restaurante_usuario_responsavel", 
+				joinColumns = @JoinColumn(name = "restaurante_id"),
+				inverseJoinColumns = @JoinColumn(name = "usuario_id"))		
+	private Set<Usuario> usuarioResponsavel;
 
 	public void ativar() {
 		setAtivo(true);
@@ -89,6 +95,14 @@ public class Restaurante {
 	
 	public void fechar() {
 		setAberto(false);
+	}
+
+	public boolean adicionarUsuario(Usuario usuario) {
+		return getUsuarioResponsavel().add(usuario);
+	}
+	
+	public boolean removerUsuario(Usuario usuario) {
+		return getUsuarioResponsavel().remove(usuario);
 	}
 
 }

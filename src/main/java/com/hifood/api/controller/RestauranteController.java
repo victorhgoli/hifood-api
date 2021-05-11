@@ -40,7 +40,7 @@ public class RestauranteController {
 
 	@Autowired
 	private RestauranteModelAssembler restauranteModelAssembler;
-	
+
 	@Autowired
 	private RestauranteInputDisassembler restauranteInputDisassembler;
 
@@ -60,7 +60,7 @@ public class RestauranteController {
 
 		try {
 			Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
-			
+
 			return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restaurante));
 		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
@@ -68,13 +68,14 @@ public class RestauranteController {
 	}
 
 	@PutMapping("/{restauranteId}")
-	public RestauranteModel atualizar(@PathVariable Long restauranteId, @Valid @RequestBody RestauranteInput restauranteInput) {
+	public RestauranteModel atualizar(@PathVariable Long restauranteId,
+			@Valid @RequestBody RestauranteInput restauranteInput) {
 		try {
-			
+
 			Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
-			
+
 			restauranteInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
-			
+
 			return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restauranteAtual));
 		} catch (RestauranteNaoEncontradoException | CidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
@@ -86,19 +87,39 @@ public class RestauranteController {
 	public void remover(@PathVariable Long restauranteId) {
 		restauranteRepository.deleteById(restauranteId);
 	}
-	
+
 	@PutMapping("/{restauranteId}/ativo")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void ativar(@PathVariable Long restauranteId) {
 		cadastroRestaurante.ativar(restauranteId);
 	}
-	
+
 	@DeleteMapping("/{restauranteId}/ativo")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void inativar(@PathVariable Long restauranteId) {
 		cadastroRestaurante.inativar(restauranteId);
 	}
-	
+
+	@PutMapping("/ativacoes")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	public void ativarMultiplos(@RequestBody List<Long> restauranteIds) {
+		try {
+			cadastroRestaurante.ativar(restauranteIds);
+		} catch (RestauranteNaoEncontradoException e) {
+			throw new NegocioException(e.getMessage(), e);
+		}
+	}
+
+	@DeleteMapping("/ativacoes")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	public void inativarMultiplos(@RequestBody List<Long> restauranteIds) {
+		try {
+			cadastroRestaurante.inativar(restauranteIds);
+		} catch (RestauranteNaoEncontradoException e) {
+			throw new NegocioException(e.getMessage(), e);
+		}
+	}
+
 	@PutMapping("/{restauranteId}/abertura")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void abrir(@PathVariable Long restauranteId) {
@@ -110,6 +131,5 @@ public class RestauranteController {
 	public void fechar(@PathVariable Long restauranteId) {
 		cadastroRestaurante.fechar(restauranteId);
 	}
-	
 
 }
