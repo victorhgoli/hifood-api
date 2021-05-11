@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.hifood.domain.exception.RestauranteNaoEncontradoException;
 import com.hifood.domain.model.Cidade;
 import com.hifood.domain.model.Cozinha;
+import com.hifood.domain.model.FormaPagamento;
 import com.hifood.domain.model.Restaurante;
 import com.hifood.domain.repository.RestauranteRepository;
 
@@ -19,9 +20,12 @@ public class CadastroRestauranteService {
 
 	@Autowired
 	private CadastroCozinhaService cozinhaService;
-	
+
 	@Autowired
 	private CadastroCidadeService cidadeService;
+
+	@Autowired
+	private CadastroFormaPagamentoService cadastroFormaPagamento;
 
 	@Transactional
 	public Restaurante salvar(Restaurante restaurante) {
@@ -33,28 +37,61 @@ public class CadastroRestauranteService {
 
 		restaurante.setCozinha(cozinha);
 		restaurante.getEndereco().setCidade(cidade);
-		
 
 		return restauranteRepository.save(restaurante);
 	}
-	
+
 	@Transactional
 	public void ativar(Long restauranteId) {
 		Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
-		
+
 		restauranteAtual.ativar();
 	}
-	
+
 	@Transactional
 	public void inativar(Long restauranteId) {
 		Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
-		
+
 		restauranteAtual.inativar();
 	}
 
 	@Transactional
-	public Restaurante buscarOuFalhar(Long restauranteId) {
-		return restauranteRepository.findById(restauranteId).orElseThrow(
-				() -> new RestauranteNaoEncontradoException(restauranteId));
+	public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+		Restaurante restaurante = buscarOuFalhar(restauranteId);
+		FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
+
+		restaurante.removerFormaPagamento(formaPagamento);
+
 	}
+
+	@Transactional
+	public void associarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+		Restaurante restaurante = buscarOuFalhar(restauranteId);
+		FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
+
+		restaurante.adicionarFormaPagamento(formaPagamento);
+	}
+
+	@Transactional
+	public void abrir(Long restauranteId) {
+		Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+		
+		restauranteAtual.abrir();
+		
+	}
+	
+	@Transactional
+	public void fechar(Long restauranteId) {
+		Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+
+		restauranteAtual.fechar();
+
+	}
+
+	@Transactional
+	public Restaurante buscarOuFalhar(Long restauranteId) {
+		return restauranteRepository.findById(restauranteId)
+				.orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
+	}
+
 }
