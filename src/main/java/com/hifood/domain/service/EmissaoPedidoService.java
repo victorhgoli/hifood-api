@@ -36,9 +36,10 @@ public class EmissaoPedidoService {
 	@Autowired
 	private CadastroProdutoService cadastroProduto;
 
-	public Pedido buscarOufalhar(Long pedidoId) {
-		return pedidoRepository.findById(pedidoId).orElseThrow(() -> new PedidoNaoEncontradoException(pedidoId));
+	public Pedido buscarOufalhar(String pedidoCodigo) {
+		return pedidoRepository.findByCodigo(pedidoCodigo).orElseThrow(() -> new PedidoNaoEncontradoException(pedidoCodigo));
 	}
+	
 
 	@Transactional
 	public Pedido emitirPedido(Pedido pedido) {
