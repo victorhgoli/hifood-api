@@ -1,4 +1,4 @@
-package com.hifood.domain.repository.filter;
+package com.hifood.domain.filter;
 
 import java.time.OffsetDateTime;
 

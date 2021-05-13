@@ -28,10 +28,10 @@ import com.hifood.api.model.input.PedidoInput;
 import com.hifood.core.data.PageableTranslator;
 import com.hifood.domain.exception.EntidadeNaoEncontradaException;
 import com.hifood.domain.exception.NegocioException;
+import com.hifood.domain.filter.PedidoFilter;
 import com.hifood.domain.model.Pedido;
 import com.hifood.domain.model.Usuario;
 import com.hifood.domain.repository.PedidoRepository;
-import com.hifood.domain.repository.filter.PedidoFilter;
 import com.hifood.domain.service.EmissaoPedidoService;
 import com.hifood.infrastructure.repository.specs.PedidoSpecs;
 
