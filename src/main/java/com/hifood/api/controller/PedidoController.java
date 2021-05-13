@@ -1,10 +1,15 @@
 package com.hifood.api.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +25,7 @@ import com.hifood.api.assembler.PedidoResumoModelAssembler;
 import com.hifood.api.model.PedidoModel;
 import com.hifood.api.model.PedidoResumoModel;
 import com.hifood.api.model.input.PedidoInput;
+import com.hifood.core.data.PageableTranslator;
 import com.hifood.domain.exception.EntidadeNaoEncontradaException;
 import com.hifood.domain.exception.NegocioException;
 import com.hifood.domain.model.Pedido;
@@ -49,8 +55,15 @@ public class PedidoController {
 	private EmissaoPedidoService emissaoPedido;
 
 	@GetMapping
-	public List<PedidoResumoModel> pesquisar(PedidoFilter filtro) {
-		return pedidoResumoModelAssembler.toCollectionModel(pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro)));
+	public Page<PedidoResumoModel> pesquisar(PedidoFilter filtro,@PageableDefault(size= 5) Pageable pageable) {
+		pageable = traduzirPageable(pageable);
+
+		Page<Pedido> pedidosPageable = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageable);
+		List<PedidoResumoModel> pedidosResumoModel = pedidoResumoModelAssembler.toCollectionModel(pedidosPageable.getContent());
+
+		Page<PedidoResumoModel> pagePedidoResumo = new PageImpl<>(pedidosResumoModel, pageable, pedidosPageable.getTotalElements());
+
+		return pagePedidoResumo;
 	}
 
 	@GetMapping("/{codigoPedido}")
@@ -75,7 +88,18 @@ public class PedidoController {
 		} catch (EntidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage(), e);
 		}
-
+	}
+	
+	private Pageable traduzirPageable(Pageable apiPageable) {
+		var mapeamento = Map.of(
+				"codigo", "codigo",
+				"restaurante.nome", "restaurante.nome",
+				"nomeCliente", "cliente.nome",
+				"valorTotal", "valorTotal"
+				);
+		
+		
+		return PageableTranslator.translate(apiPageable, mapeamento);
 	}
 
 }
