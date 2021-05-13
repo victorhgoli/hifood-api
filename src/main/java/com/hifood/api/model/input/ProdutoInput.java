@@ -22,4 +22,7 @@ public class ProdutoInput {
 	@PositiveOrZero
 	private BigDecimal preco;
 	
+	@NotNull
+	private Boolean ativo;
+	
 }

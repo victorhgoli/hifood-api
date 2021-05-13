@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -47,18 +48,25 @@ public class RestauranteProdutoController {
 	private ProdutoInputDisassembler produtoInputDisassembler;
 
 	@GetMapping
-	public List<ProdutoModel> listar(@PathVariable Long restauranteId) {
+	public List<ProdutoModel> listar(@PathVariable Long restauranteId,
+			@RequestParam(required = false) boolean incluirInativo) {
 
-		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
+		var restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
-		List<Produto> todosProdutos = produtoRepository.findByRestaurante(restaurante);
+		List<Produto> todosProdutos;
+
+		if (incluirInativo) {
+			todosProdutos = produtoRepository.findByRestaurante(restaurante);
+		} else {
+			todosProdutos = produtoRepository.findAtivoByRestaurante(restaurante);
+		}
 
 		return produtoModelAssembler.toCollectionModel(todosProdutos);
 	}
 
 	@GetMapping("/{produtoId}")
 	public ProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
-		Produto produto = cadastroProduto.buscarOuFalhar(restauranteId, produtoId);
+		var produto = cadastroProduto.buscarOuFalhar(restauranteId, produtoId);
 
 		return produtoModelAssembler.toModel(produto);
 	}
@@ -66,9 +74,9 @@ public class RestauranteProdutoController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ProdutoModel adicionar(@PathVariable Long restauranteId, @RequestBody @Valid ProdutoInput produtoInput) {
-		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
+		var restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
-		Produto produto = produtoInputDisassembler.toDomainObject(produtoInput);
+		var produto = produtoInputDisassembler.toDomainObject(produtoInput);
 
 		produto.setRestaurante(restaurante);
 
@@ -78,7 +86,7 @@ public class RestauranteProdutoController {
 	@PutMapping("/{produtoId}")
 	public ProdutoModel atualizar(@PathVariable Long restauranteId, @PathVariable Long produtoId,
 			@RequestBody @Valid ProdutoInput produtoInput) {
-		Produto produtoAtual = cadastroProduto.buscarOuFalhar(restauranteId, produtoId);
+		var produtoAtual = cadastroProduto.buscarOuFalhar(restauranteId, produtoId);
 
 		produtoInputDisassembler.copyToDomainObject(produtoInput, produtoAtual);
 

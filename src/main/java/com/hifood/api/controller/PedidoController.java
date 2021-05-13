@@ -25,7 +25,9 @@ import com.hifood.domain.exception.NegocioException;
 import com.hifood.domain.model.Pedido;
 import com.hifood.domain.model.Usuario;
 import com.hifood.domain.repository.PedidoRepository;
+import com.hifood.domain.repository.filter.PedidoFilter;
 import com.hifood.domain.service.EmissaoPedidoService;
+import com.hifood.infrastructure.repository.specs.PedidoSpecs;
 
 @RestController
 @RequestMapping("/pedidos")
@@ -47,8 +49,8 @@ public class PedidoController {
 	private EmissaoPedidoService emissaoPedido;
 
 	@GetMapping
-	public List<PedidoResumoModel> listar() {
-		return pedidoResumoModelAssembler.toCollectionModel(pedidoRepository.findAll());
+	public List<PedidoResumoModel> pesquisar(PedidoFilter filtro) {
+		return pedidoResumoModelAssembler.toCollectionModel(pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro)));
 	}
 
 	@GetMapping("/{codigoPedido}")
