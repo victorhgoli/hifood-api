@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hifood.domain.exception.FotoProdutoNaoEncontradoException;
 import com.hifood.domain.model.FotoProduto;
 import com.hifood.domain.repository.ProdutoRepository;
 import com.hifood.domain.service.FotoStorageService.NovaFoto;
@@ -27,21 +28,29 @@ public class CatalogoFotoProdutoService {
 		Long restauranteId = foto.getRestauranteId();
 		Long produtoId = foto.getProduto().getId();
 		String novoNomeArquivo = fotoStorage.gerarNomeArquivo(foto.getNomeArquivo());
+		String nomeArquivoExistente = null;
 
 		Optional<FotoProduto> fotoExistente = produtoRepository.findFotoById(restauranteId, produtoId);
 
 		if (fotoExistente.isPresent()) {
+			nomeArquivoExistente = fotoExistente.get().getNomeArquivo();
 			produtoRepository.delete(fotoExistente.get());
 		}
 
+		foto.setNomeArquivo(novoNomeArquivo);
 		FotoProduto fotoProduto = produtoRepository.save(foto);
 		produtoRepository.flush();
 
-		var novaFoto = NovaFoto.builder().nome(novoNomeArquivo).inputStream(inputStream).build();
+		var novaFoto = NovaFoto.builder().nome(foto.getNomeArquivo()).inputStream(inputStream).build();
 
-		fotoStorage.armazenar(novaFoto);
+		fotoStorage.substituir(nomeArquivoExistente, novaFoto);
 
 		return fotoProduto;
+	}
+
+	public FotoProduto buscaOuFalhar(Long restauranteId, Long produtoId)  {
+		return produtoRepository.findFotoById(restauranteId, produtoId)
+				.orElseThrow(() -> new FotoProdutoNaoEncontradoException(restauranteId, produtoId));
 	}
 
 }
