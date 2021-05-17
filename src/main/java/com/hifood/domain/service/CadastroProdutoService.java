@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hifood.domain.exception.ProdutoNaoEncontradoException;
-import com.hifood.domain.model.FotoProduto;
 import com.hifood.domain.model.Produto;
 import com.hifood.domain.repository.ProdutoRepository;
 

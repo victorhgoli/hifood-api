@@ -15,20 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hifood.api.assembler.GrupoModelAssembler;
 import com.hifood.api.model.GrupoModel;
 import com.hifood.domain.model.Usuario;
-import com.hifood.domain.repository.GrupoRepository;
-import com.hifood.domain.service.CadastroRestauranteService;
 import com.hifood.domain.service.CadastroUsuarioService;
 
 @RestController
 @RequestMapping("/usuarios/{usuarioId}/grupos")
 public class UsuarioGrupoController {
 
-	@Autowired
-	private GrupoRepository grupoRepository;
-
-	@Autowired
-	private CadastroRestauranteService cadastroRestaurante;
-
+	/*
+	 * @Autowired private GrupoRepository grupoRepository;
+	 * 
+	 * @Autowired private CadastroRestauranteService cadastroRestaurante;
+	 */
 	@Autowired
 	private CadastroUsuarioService cadastroUsuario;
 

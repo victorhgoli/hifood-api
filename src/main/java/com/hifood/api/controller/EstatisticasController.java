@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hifood.domain.exception.EntidadeNaoEncontradaException;
 import com.hifood.domain.filter.VendaDiariaFilter;
 import com.hifood.domain.model.dto.VendaDiaria;
 import com.hifood.domain.service.VendaQueryService;

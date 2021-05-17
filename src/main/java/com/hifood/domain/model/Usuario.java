@@ -1,7 +1,6 @@
 package com.hifood.domain.model;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;

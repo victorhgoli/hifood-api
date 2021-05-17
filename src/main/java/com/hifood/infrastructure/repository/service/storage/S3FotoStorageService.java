@@ -1,10 +1,8 @@
 package com.hifood.infrastructure.repository.service.storage;
 
-import java.io.InputStream;
 import java.net.URL;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -12,7 +10,6 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.hifood.core.storage.StorageProperties;
-import com.hifood.domain.exception.StorageException;
 import com.hifood.domain.service.FotoStorageService;
 
 public class S3FotoStorageService implements FotoStorageService {

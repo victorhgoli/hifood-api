@@ -1,4 +1,4 @@
-package com.hifood.domain.exception;
+package com.hifood.infrastructure.repository.service.storage;
 
 public class StorageException extends RuntimeException {
 

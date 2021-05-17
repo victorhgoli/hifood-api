@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.hifood.api.model.input.ProdutoInput;
-import com.hifood.domain.model.Estado;
 import com.hifood.domain.model.Produto;
 
 @Component

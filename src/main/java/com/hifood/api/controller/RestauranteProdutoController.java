@@ -6,7 +6,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,9 +21,7 @@ import com.hifood.api.assembler.ProdutoModelAssembler;
 import com.hifood.api.model.ProdutoModel;
 import com.hifood.api.model.input.ProdutoInput;
 import com.hifood.domain.model.Produto;
-import com.hifood.domain.model.Restaurante;
 import com.hifood.domain.repository.ProdutoRepository;
-import com.hifood.domain.repository.RestauranteRepository;
 import com.hifood.domain.service.CadastroProdutoService;
 import com.hifood.domain.service.CadastroRestauranteService;
 

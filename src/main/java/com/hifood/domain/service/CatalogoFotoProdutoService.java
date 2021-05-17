@@ -2,7 +2,6 @@ package com.hifood.domain.service;
 
 import java.io.InputStream;
 import java.util.Optional;
-import java.util.UUID;
 
 import javax.transaction.Transactional;
 
