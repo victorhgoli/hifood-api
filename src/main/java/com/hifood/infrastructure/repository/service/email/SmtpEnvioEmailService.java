@@ -13,7 +13,6 @@ import com.hifood.domain.service.EnvioEmailService;
 
 import freemarker.template.Configuration;
 
-@Service
 public class SmtpEnvioEmailService implements EnvioEmailService {
 
 	@Autowired
@@ -44,7 +43,7 @@ public class SmtpEnvioEmailService implements EnvioEmailService {
 		}
 	}
 
-	private String processarTemplate(Mensagem mensagem) {
+	protected String processarTemplate(Mensagem mensagem) {
 		try {
 			var template = freemarkerConfig.getTemplate(mensagem.getCorpo());
 
