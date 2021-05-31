@@ -1,11 +1,10 @@
 # hifood-api
-Api para aplicativo de comida, objeto de estudos do curso especialista spring rest
 
 [![NPM](https://img.shields.io/npm/l/react)](https://github.com/victorhgoli/hifood-api/blob/master/LICENSE) 
 
 # Descrição do Projeto
+Api para aplicativo de comida, objeto de estudos do curso especialista spring rest
 
-Exemplicar um crud das entidades e Cidade e Clientes.
 
 
 # Tecnologias utilizadas
@@ -17,7 +16,6 @@ Exemplicar um crud das entidades e Cidade e Clientes.
 - Banco de dados H2
 - JUnit
 - RestAssured
-- Jacoco
 
 # Como executar a Aplicação
 
@@ -25,10 +23,10 @@ Pré-requisitos: Java 8
 
 ```bash
 # clonar repositório
-git clone https://github.com/victorhgoli/TesteCompasso.git
+git clone https://github.com/victorhgoli/hifood-api.git
 
 # Acesse a pasta do projeto
-cd TesteCompasso
+cd hifood-api
 
 # executar o projeto
 mvnw spring-boot:run
