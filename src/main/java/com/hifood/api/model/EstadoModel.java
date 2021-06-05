@@ -1,10 +1,12 @@
 package com.hifood.api.model;
 
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import lombok.Getter;
 import lombok.Setter;
 
+@Relation(collectionRelation = "cidades")
 @Getter
 @Setter
 public class EstadoModel extends RepresentationModel<EstadoModel>{
