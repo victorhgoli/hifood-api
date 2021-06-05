@@ -25,7 +25,7 @@ public class RestauranteInputDisassembler {
 		restaurante.setCozinha(new Cozinha());
 		
 		if(restaurante.getEndereco() != null) {
-			restaurante.getEndereco().setCidade(new Cidade());
+			restaurante.getEndereco().setCidade(Cidade.builder().build());
 			
 		}
 
