@@ -9,8 +9,11 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
+import com.hifood.api.controller.CidadeController;
 import com.hifood.api.controller.EstadoController;
+import com.hifood.api.model.CidadeModel;
 import com.hifood.api.model.EstadoModel;
+import com.hifood.domain.model.Cidade;
 import com.hifood.domain.model.Estado;
 
 @Component
@@ -22,9 +25,9 @@ public class EstadoModelAssembler extends RepresentationModelAssemblerSupport<Es
 	public EstadoModelAssembler() {
 		super(EstadoController.class, EstadoModel.class);
 	}
-
+	
 	public EstadoModel toModel(Estado estado) {
-		EstadoModel estadoModel = modelMapper.map(estado, EstadoModel.class);
+		EstadoModel estadoModel = createModelWithId(estado.getId(), estado); 
 
 		modelMapper.map(estado, estadoModel);
 

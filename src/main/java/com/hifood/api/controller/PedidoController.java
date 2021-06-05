@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +27,7 @@ import com.hifood.api.assembler.PedidoResumoModelAssembler;
 import com.hifood.api.model.PedidoModel;
 import com.hifood.api.model.PedidoResumoModel;
 import com.hifood.api.model.input.PedidoInput;
+import com.hifood.core.data.PageWrapper;
 import com.hifood.core.data.PageableTranslator;
 import com.hifood.domain.exception.EntidadeNaoEncontradaException;
 import com.hifood.domain.exception.NegocioException;
@@ -49,21 +52,23 @@ public class PedidoController {
 	private PedidoInputDisassembler pedidoInputDisassembler;
 
 	@Autowired
+	private PagedResourcesAssembler<Pedido> pagedPedidoResumoModel;
+
+	@Autowired
 	private PedidoRepository pedidoRepository;
 
 	@Autowired
 	private EmissaoPedidoService emissaoPedido;
 
 	@GetMapping
-	public Page<PedidoResumoModel> pesquisar(PedidoFilter filtro,@PageableDefault(size= 5) Pageable pageable) {
-		pageable = traduzirPageable(pageable);
+	public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, @PageableDefault(size = 5) Pageable pageable) {
+		Pageable pageableTraduzido = traduzirPageable(pageable);
 
 		Page<Pedido> pedidosPageable = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageable);
-		List<PedidoResumoModel> pedidosResumoModel = pedidoResumoModelAssembler.toCollectionModel(pedidosPageable.getContent());
+		
+		pedidosPageable = new PageWrapper<>(pedidosPageable, pageableTraduzido);
 
-		Page<PedidoResumoModel> pagePedidoResumo = new PageImpl<>(pedidosResumoModel, pageable, pedidosPageable.getTotalElements());
-
-		return pagePedidoResumo;
+		return pagedPedidoResumoModel.toModel(pedidosPageable, pedidoResumoModelAssembler);
 	}
 
 	@GetMapping("/{codigoPedido}")
@@ -89,16 +94,11 @@ public class PedidoController {
 			throw new NegocioException(e.getMessage(), e);
 		}
 	}
-	
+
 	private Pageable traduzirPageable(Pageable apiPageable) {
-		var mapeamento = Map.of(
-				"codigo", "codigo",
-				"restaurante.nome", "restaurante.nome",
-				"nomeCliente", "cliente.nome",
-				"valorTotal", "valorTotal"
-				);
-		
-		
+		var mapeamento = Map.of("codigo", "codigo", "restaurante.nome", "restaurante.nome", "nomeCliente",
+				"cliente.nome", "valorTotal", "valorTotal");
+
 		return PageableTranslator.translate(apiPageable, mapeamento);
 	}
 
