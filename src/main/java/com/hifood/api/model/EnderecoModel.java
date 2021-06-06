@@ -1,11 +1,16 @@
 package com.hifood.api.model;
 
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
+
 import lombok.Getter;
 import lombok.Setter;
 
+
+@Relation(collectionRelation = "enderecos")
 @Setter
 @Getter
-public class EnderecoModel {
+public class EnderecoModel extends RepresentationModel<EnderecoModel>{
 
 	private String cep;
 	private String logradouro;

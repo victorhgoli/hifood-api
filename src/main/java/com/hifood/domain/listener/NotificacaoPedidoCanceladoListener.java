@@ -1,12 +1,10 @@
 package com.hifood.domain.listener;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 import com.hifood.domain.event.PedidoCanceladoEvent;
-import com.hifood.domain.event.PedidoConfirmadoEvent;
 import com.hifood.domain.service.EnvioEmailService;
 import com.hifood.domain.service.EnvioEmailService.Mensagem;
 

@@ -1,7 +1,6 @@
 package com.hifood.api.assembler;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +8,8 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
+import com.hifood.api.HifoodLinks;
 import com.hifood.api.controller.CidadeController;
-import com.hifood.api.controller.EstadoController;
 import com.hifood.api.model.CidadeModel;
 import com.hifood.domain.model.Cidade;
 
@@ -20,6 +19,8 @@ public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Ci
 	@Autowired
 	private ModelMapper modelMapper;
 	
+	@Autowired
+	private HifoodLinks hiFoodLinks;
 	
 	public CidadeModelAssembler() {
 		super(CidadeController.class, CidadeModel.class);
@@ -31,11 +32,8 @@ public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Ci
 		
 		modelMapper.map(cidade, cidadeModel);
 		
-		cidadeModel.add(linkTo(methodOn(CidadeController.class)
-				.listar()).withRel("cidades"));
-		
-		cidadeModel.getEstado().add(linkTo(methodOn(EstadoController.class)
-				.buscar(cidadeModel.getEstado().getId())).withSelfRel());
+		cidadeModel.add(hiFoodLinks.linkToCidades("cidades"));
+		cidadeModel.getEstado().add(hiFoodLinks.linkToEstado(cidadeModel.getEstado().getId()));
 		
 		return cidadeModel;
 	}

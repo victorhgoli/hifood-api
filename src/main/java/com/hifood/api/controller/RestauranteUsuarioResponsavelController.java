@@ -1,8 +1,7 @@
 package com.hifood.api.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hifood.api.HifoodLinks;
 import com.hifood.api.assembler.UsuarioModelAssembler;
 import com.hifood.api.model.UsuarioModel;
 import com.hifood.domain.model.Restaurante;
@@ -26,12 +26,17 @@ public class RestauranteUsuarioResponsavelController {
 
 	@Autowired
 	private UsuarioModelAssembler usuarioModelAssembler;
+	
+	@Autowired
+	private HifoodLinks hiFoodLinks;
 
 	@GetMapping
-	public List<UsuarioModel> listar(@PathVariable Long restauranteId) {
-
+	public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
-		return usuarioModelAssembler.toCollectionModel(restaurante.getUsuarioResponsavel());
+		
+		return usuarioModelAssembler.toCollectionModel(restaurante.getUsuarioResponsavel())
+					.removeLinks()
+					.add(hiFoodLinks.linkToResponsaveisRestaurante(restauranteId));
 	}
 
 	@DeleteMapping("/{usuarioId}")
