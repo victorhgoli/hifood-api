@@ -1,10 +1,9 @@
 package com.hifood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +42,7 @@ public class FormaPagamentoController {
 	private FormaPagamentoInputDisassembler estadoInputDisassembler;
 
 	@GetMapping
-	public List<FormaPagamentoModel> listar() {
+	public CollectionModel<FormaPagamentoModel> listar() {
 		return formaPagamentoModelAssembler.toCollectionModel(formaPagamentoRepository.findAll());
 	}
 

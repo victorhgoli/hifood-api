@@ -31,7 +31,6 @@ public class EstadoModelAssembler extends RepresentationModelAssemblerSupport<Es
 
 		modelMapper.map(estado, estadoModel);
 
-//		estadoModel.add(linkTo(methodOn(EstadoController.class).listar()).withRel("estados"));
 		estadoModel.add(hiFoodLinks.linkToEstados("estados"));
 
 		return estadoModel;
