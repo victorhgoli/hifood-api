@@ -16,10 +16,13 @@ import com.hifood.api.controller.CozinhaController;
 import com.hifood.api.controller.EstadoController;
 import com.hifood.api.controller.FluxoPedidoController;
 import com.hifood.api.controller.FormaPagamentoController;
+import com.hifood.api.controller.GrupoController;
+import com.hifood.api.controller.GrupoPermissaoController;
 import com.hifood.api.controller.PedidoController;
 import com.hifood.api.controller.RestauranteController;
 import com.hifood.api.controller.RestauranteFormaPagamentoController;
 import com.hifood.api.controller.RestauranteProdutoController;
+import com.hifood.api.controller.RestauranteProdutoFotoController;
 import com.hifood.api.controller.RestauranteUsuarioResponsavelController;
 import com.hifood.api.controller.UsuarioController;
 import com.hifood.api.controller.UsuarioGrupoController;
@@ -220,6 +223,39 @@ public class HifoodLinks {
 	
 	public Link linkToRestauranteFormaPagamentoAssociacao(Long restauranteId, String rel) {
 		return linkTo(methodOn(RestauranteFormaPagamentoController.class).associar(restauranteId, null)).withRel(rel);
+	}
+	
+	public Link linkToRestauranteUsuarioResponsavelDesassociacao(Long restauranteId, Long usuarioId, String rel) {
+		return linkTo(methodOn(RestauranteUsuarioResponsavelController.class).desassociar(restauranteId, usuarioId)).withRel(rel);
+	}
+	
+	public Link linkToRestauranteUsuarioResponsavelAssociacao(Long restauranteId, String rel) {
+		return linkTo(methodOn(RestauranteUsuarioResponsavelController.class).associar(restauranteId, null)).withRel(rel);
+	}
+
+	public Link linkToProdutos(Long restauranteId, String rel) {
+		return linkTo(methodOn(RestauranteProdutoController.class).listar(restauranteId, null)).withRel(rel);
+	}
+	
+	public Link linkToProdutos(Long restauranteId) {
+		return linkToProdutos(restauranteId, IanaLinkRelations.SELF_VALUE.toString());
+	}
+	
+	public Link linkToFotoProduto(Long restauranteId, Long produtoId, String rel) {
+	    return linkTo(methodOn(RestauranteProdutoFotoController.class)
+	            .buscar(restauranteId, produtoId)).withRel(rel);
+	}
+
+	public Link linkToFotoProduto(Long restauranteId, Long produtoId) {
+	    return linkToFotoProduto(restauranteId, produtoId, IanaLinkRelations.SELF.value());
+	}
+
+	public Link linkToGrupos(String rel) {
+		return linkTo(methodOn(GrupoController.class).listar()).withRel(rel);
+	}
+
+	public Link linkToPermissoesGrupo(Long id, String rel) {
+		return linkTo(methodOn(GrupoPermissaoController.class).listar(id)).withRel(rel);
 	}
 
 }

@@ -46,7 +46,10 @@ public class RestauranteModelAssembler extends RepresentationModelAssemblerSuppo
 		}
 		
 		restauranteModel.getCozinha().add(hiFoodLinks.linkToCozinha(restauranteModel.getCozinha().getId()));
-		restauranteModel.getEndereco().getCidade().add(hiFoodLinks.linkToCidade(restaurante.getEndereco().getCidade().getId()));
+
+		if(restauranteModel.getEndereco() != null && restauranteModel.getEndereco().getCidade() != null) {
+			restauranteModel.getEndereco().getCidade().add(hiFoodLinks.linkToCidade(restaurante.getEndereco().getCidade().getId()));
+		}
 		
 		return restauranteModel;
 	}

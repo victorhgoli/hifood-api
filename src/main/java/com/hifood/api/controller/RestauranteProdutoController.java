@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hifood.api.HifoodLinks;
 import com.hifood.api.assembler.ProdutoInputDisassembler;
 import com.hifood.api.assembler.ProdutoModelAssembler;
 import com.hifood.api.model.ProdutoModel;
@@ -43,10 +45,13 @@ public class RestauranteProdutoController {
 
 	@Autowired
 	private ProdutoInputDisassembler produtoInputDisassembler;
+	
+	@Autowired
+	private HifoodLinks hifoodLinks;
 
 	@GetMapping
-	public List<ProdutoModel> listar(@PathVariable Long restauranteId,
-			@RequestParam(required = false) boolean incluirInativo) {
+	public CollectionModel<ProdutoModel> listar(@PathVariable Long restauranteId,
+			@RequestParam(required = false) Boolean incluirInativo) {
 
 		var restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
@@ -58,7 +63,8 @@ public class RestauranteProdutoController {
 			todosProdutos = produtoRepository.findAtivosByRestaurante(restaurante);
 		}
 
-		return produtoModelAssembler.toCollectionModel(todosProdutos);
+		return produtoModelAssembler.toCollectionModel(todosProdutos)
+				.add(hifoodLinks.linkToProdutos(restauranteId));
 	}
 
 	@GetMapping("/{produtoId}")
