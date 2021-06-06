@@ -3,6 +3,7 @@ package com.hifood.api.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,10 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hifood.api.HifoodLinks;
 import com.hifood.domain.filter.VendaDiariaFilter;
 import com.hifood.domain.model.dto.VendaDiaria;
 import com.hifood.domain.service.VendaQueryService;
 import com.hifood.domain.service.VendaReportService;
+
+import lombok.Data;
 
 @RestController
 @RequestMapping("/estatisticas")
@@ -25,6 +29,18 @@ public class EstatisticasController {
 
 	@Autowired
 	private VendaReportService vendaReportService;
+	
+	@Autowired
+	private HifoodLinks links;
+	
+	@GetMapping
+	public EstatisticasModel estatisticas() {
+		var estatisticas = new EstatisticasModel();
+		
+		estatisticas.add(links.linktoEstatisticaVendaDiaria("vendas-diarias"));
+		
+		return estatisticas;
+	}
 
 	@GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro,
@@ -42,6 +58,11 @@ public class EstatisticasController {
 		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=vendas-diarias.pdf");
 
 		return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).headers(headers).body(bytesPdf);
+	}
+	
+	@Data
+	private static class EstatisticasModel extends RepresentationModel<EstatisticasModel>{
+		
 	}
 
 }
